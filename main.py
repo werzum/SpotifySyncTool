@@ -49,6 +49,11 @@ def update_playlists(window,playlist_urls,playlist_names):
     window["listbox_url"].update(playlist_urls)
     window["listbox_name"].update(playlist_names)
 
+def remove_from_playlist(window,playlist_urls,playlist_names,index):
+    playlist_urls.pop(index)
+    playlist_names.pop(index)
+    update_playlists(window,playlist_urls,playlist_names)
+
 def check_valid_url(url):
     return validators.url(url)
 
@@ -85,12 +90,18 @@ while True:
             sg.Popup('Malformed URL')
 
     if event == "Remove":
-        #print(window.Element('listbox_url').Widget.curselection()[0])
-        #print(window.Element('listbox_name').Widget.curselection()[0])
-        index = window.Element('listbox_url').Widget.curselection()[0]
-        playlist_urls.pop(index)
-        playlist_names.pop(index)
-        update_playlists(window,playlist_urls,playlist_names)
+
+        try:
+            index = window.Element('listbox_url').Widget.curselection()[0]
+        except:
+            try:
+                index = window.Element('listbox_name').Widget.curselection()[0]
+            except:
+                sg.Popup("Select a playlist URL or name to be removed")
+            else:
+                remove_from_playlist(window,playlist_urls,playlist_names,index)    
+        else:
+            remove_from_playlist(window,playlist_urls,playlist_names,index)
 
     if event == "Sync":
         sync(playlist_urls)

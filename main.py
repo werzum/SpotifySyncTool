@@ -5,6 +5,8 @@ import spotipy
 import re
 from spotipy.oauth2 import SpotifyClientCredentials
 from dotenv import load_dotenv
+import validators
+import csv
 
 #load .env file
 load_dotenv()
@@ -26,35 +28,43 @@ def fetch_playlist_name(playlist_url):
 	return result["name"]
 
 
-playlist_urls = [
-"https://open.spotify.com/playlist/6mWCb6tfH3P60ZHPIGsaLV?si=d5a58a4f8259492e",
-"https://open.spotify.com/playlist/7s7ZxjKQ48dSCmuQgdd9rj?si=4b33d984cfec4894",
-"https://open.spotify.com/playlist/6BDwGc3oqC2ECKn95xa2YW?si=d717f5fe30e849c7",
-"https://open.spotify.com/playlist/1gGbG1LYP4dOdXHh0XXybP?si=a3c8bc82a45a40bf",
-"https://open.spotify.com/playlist/19jt2QYR2EEiJCjsbrA7QD?si=fa1adf1520324dc9",
-"https://open.spotify.com/playlist/1LdNIlSZgQPTwM9nGA1Oaf?si=487d951f480d4ddc",
-"https://open.spotify.com/playlist/6SP4zGb7hO13Wi4O0OrX7f?si=318ca7bf1c9c4973",
-"https://open.spotify.com/playlist/5ELy02oN5DweLRFLx64nJc?si=a09513e584eb4685",
-"https://open.spotify.com/playlist/71pk02pQkKzww443kUf21h?si=dc3c1803a3f24827",
-"https://open.spotify.com/playlist/1T8oQMP9iCSGwbbQvg3Rab?si=b8b263e1f2964319"]
+#read the urls from the CSV
+playlist_urls = []
+with open("playlist_urls.csv") as csv_file:
+    reader = csv.reader(csv_file)
+    #stupid unpacking hack that surely has a more elegant solution somewhere
+    temp_list = list(reader)
+    for elm in temp_list[0]:
+        playlist_urls.append(elm)
 
 playlist_names = [fetch_playlist_name(x) for x in playlist_urls]
+#playlist_names=[]
 
 def sync(playlists):
     sg.Popup('Sync Started', keep_on_top=True)
     for value in playlist_urls:
         subprocess.Popen('spotify_dl -l '+value+ " -o", shell=True)
 
-#for value in playlist_urls:
-#    subprocess.Popen('spotify_dl -l '+value)
+def update_playlists(window,playlist_urls,playlist_names):
+    window["listbox_url"].update(playlist_urls)
+    window["listbox_name"].update(playlist_names)
+
+def check_valid_url(url):
+    return validators.url(url)
+
+def save_urls_to_csv(playlist_urls):
+    with open("playlist_urls.csv","w") as csv_file:
+        write = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+        write.writerow(playlist_urls)
 
 # Define the window's contents
-layout = [[sg.Text("Playlists to synchronize")],
-          #[sg.Multiline(playlist_urls,key='playlists',size=(100, 20))],
-          [sg.Listbox(values=playlist_urls,size=(80,10),key="listbox")],
-          [sg.Input(key="input")],
-          [sg.Button("Add"),sg.Button("Remove"),sg.Button("Remove_All")],
-          [sg.Button('Sync'), sg.Button('Quit')]]
+layout = [[sg.Frame(layout=[
+            [sg.Listbox(values=playlist_urls,size=(80,10),key="listbox_url")],
+            [sg.Listbox(values=playlist_names,size=(80,10),key="listbox_name")],
+        ],title="Playlists")],
+        [sg.Input(key="input")],
+        [sg.Button("Add"),sg.Button("Remove"),sg.Button("Remove_All")],
+        [sg.Button('Sync'), sg.Button('Quit'), sg.Button("Save")]]
 
 
 # Create the window
@@ -65,22 +75,33 @@ while True:
     event, values = window.read()
 
     if event == "Add":
-        playlist_urls.append(values["input"])
-        window["input"].value = ""
-        window["listbox"].update(playlist_urls)
-
+        input = values["input"]
+        if check_valid_url(input):
+            playlist_urls.append(input)
+            playlist_names.append(fetch_playlist_names(input))
+            window["input"].value = ""
+            update_playlists(window,playlist_urls,playlist_names)
+        else:
+            sg.Popup('Malformed URL')
 
     if event == "Remove":
-        selection = window.Element('listbox').Widget.curselection()[0]
-        del playlist_urls[selection]
-        window["listbox"].update(playlist_urls)
+        #print(window.Element('listbox_url').Widget.curselection()[0])
+        #print(window.Element('listbox_name').Widget.curselection()[0])
+        index = window.Element('listbox_url').Widget.curselection()[0]
+        playlist_urls.pop(index)
+        playlist_names.pop(index)
+        update_playlists(window,playlist_urls,playlist_names)
 
     if event == "Sync":
         sync(playlist_urls)
 
     if event == "Remove_All":
         playlist_urls = []
-        window["listbox"].update(playlist_urls)
+        playlist_names = []
+        update_playlists(window,playlist_urls,playlist_names)
+
+    if event == "Save":
+        save_urls_to_csv(playlist_urls)
 
     # See if user wants to quit or window was closed
     if event == sg.WINDOW_CLOSED or event == 'Quit':

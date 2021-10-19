@@ -1,8 +1,10 @@
 import os
-import subprocess
 import PySimpleGUI as sg
 
+from dotenv import load_dotenv
+
 from playlist_management import *
+from utilities import *
 
 def startup():
 	sp = create_spotify_client()
@@ -45,8 +47,18 @@ def main():
 
 	window, layout = create_window_elements(playlist_urls,playlist_names)
 
+
+
 	# Display and interact with the Window using an Event Loop
+	counter = 0
 	while True:
+
+		#hacky solution for checking environment variable only once
+		if counter == 0:
+			if spotify_environment_variables_present() == False:
+				sg.Popup(spotify_dl_env_var_text)
+			counter+=1
+
 		event, values = window.read()
 
 		if event == "Add":
@@ -79,10 +91,10 @@ def main():
 				remove_from_playlist(window,playlist_urls,playlist_names,index)
 
 		if event == "Sync":
-			sync(playlist_urls)
+			sync(playlist_urls, playlist_names)
 
 		if event == "Remove_All":
-			playlist_urls = []
+			plalyist_urls = []
 			playlist_names = []
 			update_playlists(window,playlist_urls,playlist_names)
 

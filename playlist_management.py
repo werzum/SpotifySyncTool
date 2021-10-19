@@ -1,20 +1,19 @@
 import csv
-from dotenv import load_dotenv
+import subprocess
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-import validators
 import re
 
 import PySimpleGUI as sg
 
 #Sync Functionalities
 
-def sync(playlists):
+def sync(playlist_urls, playlist_names):
 	sg.Popup('Sync Started', keep_on_top=True)
-	for value in playlist_urls:
-		subprocess.Popen('spotify_dl -l '+value+ " -o", shell=True)
+	for url,name in zip(playlist_urls,playlist_names):
+		subprocess.Popen(f"spotify_dl -l {url} -o '{name}'", shell=True)
 
 def update_playlists(window,playlist_urls,playlist_names):
 	window["listbox_url"].update(playlist_urls)
@@ -41,10 +40,6 @@ def fetch_playlist_name(sp, playlist_url):
 		return err
 	else:
 	   return result["name"]
-
-
-def check_valid_url(url):
-	return validators.url(url)
 
 
 ## CSV loading and saving

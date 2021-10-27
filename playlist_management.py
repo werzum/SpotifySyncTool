@@ -1,19 +1,24 @@
 import csv
 import subprocess
 
+from subprocess import Popen, PIPE
+
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
 import re
-
 import PySimpleGUI as sg
 
 #Sync Functionalities
 
-def sync(playlist_urls, playlist_names):
-	sg.Popup('Sync Started', keep_on_top=True)
+def sync(window, playlist_urls, playlist_names, output):
 	for url,name in zip(playlist_urls,playlist_names):
-		subprocess.Popen(f"spotify_dl -l {url} -o '{name}'", shell=True)
+		cmd = ["spotify_dl","-l",url,"-o",name]
+		p = Popen(cmd, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+		for line in iter(p.stdout.readline, b''):
+			output.append(line.rstrip())
+			window["listbox_output_1"].update(output)
+			window.Refresh()
 
 def update_playlists(window,playlist_urls,playlist_names):
 	window["listbox_url"].update(playlist_urls)
@@ -58,4 +63,5 @@ def read_playlist_urls():
 		temp_list = list(reader)
 		for elm in temp_list[0]:
 			playlist_urls.append(elm)
+
 	return playlist_urls

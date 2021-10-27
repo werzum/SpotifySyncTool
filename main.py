@@ -15,7 +15,10 @@ def startup():
 	#and fetch the respective names from Spotify
 	playlist_names = [fetch_playlist_name(sp,x) for x in playlist_urls]
 
-	return sp, playlist_urls, playlist_names
+	#empty stdout window
+	output = []
+
+	return sp, playlist_urls, playlist_names, output
 
 def create_spotify_client():
 	#load .env file
@@ -27,11 +30,13 @@ def create_spotify_client():
 	return spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=client_id,
 															   client_secret=client_secret))
 
-def create_window_elements(playlist_urls,playlist_names):
+def create_window_elements(playlist_urls,playlist_names, output):
 	# Define the window's contents
 	layout = [[sg.Frame(layout=[
 				[sg.Listbox(values=playlist_urls,size=(80,10),key="listbox_url")],
 				[sg.Listbox(values=playlist_names,size=(80,10),key="listbox_name")],
+#				[sg.Output(size=(80,5),key="listbox_output")],
+				[sg.Listbox(values=output,size=(80,5),key="listbox_output_1")]
 			],title="Playlists")],
 			[sg.Input(key="input",enable_events=True)],
 			[sg.Button("Add",bind_return_key=True),sg.Button("Remove"),sg.Button("Remove_All")],
@@ -43,11 +48,9 @@ def create_window_elements(playlist_urls,playlist_names):
 	return window, layout
 
 def main():
-	sp, playlist_urls, playlist_names = startup()
+	sp, playlist_urls, playlist_names, output = startup()
 
-	window, layout = create_window_elements(playlist_urls,playlist_names)
-
-
+	window, layout = create_window_elements(playlist_urls,playlist_names, output)
 
 	# Display and interact with the Window using an Event Loop
 	counter = 0
@@ -91,7 +94,7 @@ def main():
 				remove_from_playlist(window,playlist_urls,playlist_names,index)
 
 		if event == "Sync":
-			sync(playlist_urls, playlist_names)
+			sync(window, playlist_urls, playlist_names, output)
 
 		if event == "Remove_All":
 			plalyist_urls = []

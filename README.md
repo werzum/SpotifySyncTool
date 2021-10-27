@@ -3,7 +3,7 @@
 A tool that helps you download and update Spotify playlists on your harddrive, so you can keep your music library updated offline as mp3s.
 By pressing the "sync" button, all songs of the entered playlists are downloaded into respective playlist folders
 
-![Uploading image.png…](Image showing the user interface)
+![Image showing the user interface](https://user-images.githubusercontent.com/29024343/139120505-8072551f-e403-49eb-be5b-90f0e54317a4.png)
 
 ## Installation
 

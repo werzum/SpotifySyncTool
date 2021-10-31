@@ -10,8 +10,9 @@ By pressing the "sync" button, all songs of the entered playlists are downloaded
 ### Binary (regular usage)
 
 1. `pip install` the dependencies
-2. Create a .env and add `client_id=<your_spotify_client_id` and `client_secret=<your_spotify_client_secret> to it.
-3. Execute `main.exe`
+2. Install `ffmpeg` and add it to your path as per this [tutorial](https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/).
+3. Create a .env and add `client_id=<your_spotify_client_id` and `client_secret=<your_spotify_client_secret> to it.
+4. Execute `main.exe`
 
 ### From Source
 
@@ -21,9 +22,12 @@ By pressing the "sync" button, all songs of the entered playlists are downloaded
 
 ## Usage
 
-Install the tool with python
-
+Install the tool and other requirements as specified above.
 Since this tool relies on spotify_dl to parse the Spotify songs, you need to create a Spotify Developer account 
-and export the 'client_id' and 'client_secret' environment variables. For further reference, have a look at the spotify_dl documentation (https://github.com/SathyaBhat/spotify-dl)
+and export the 'client_id' and 'client_secret' environment variables before using it. 
+For further reference, have a look at the spotify_dl documentation (https://github.com/SathyaBhat/spotify-dl)
 
-Then, spotipy_should be able to download songs.
+Then, you can start the program. Add a playlist to your list of playlists to sync in the textfield at the bottom. Upon adding a playlist,
+it is also stored in a local .CSV file that keeps track of the playlists you have, so they are restored on startup.
+
+When you click sync, `spotify_dl` is executed for the given playlists, downloading the most recent songs you added.

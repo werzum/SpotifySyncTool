@@ -54,14 +54,17 @@ def save_urls_to_csv(playlist_urls):
 		write = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
 		write.writerow(playlist_urls)
 
-def read_playlist_urls():
+def read_playlist_urls(csv_file_path):
 	#read the urls from the CSV
 	playlist_urls = []
-	with open("playlist_urls.csv") as csv_file:
-		reader = csv.reader(csv_file)
-		#stupid unpacking hack that surely has a more elegant solution somewhere
-		temp_list = list(reader)
-		for elm in temp_list[0]:
-			playlist_urls.append(elm)
+	try:
+		with open(csv_file_path+".csv") as csv_file:
+			reader = csv.reader(csv_file)
+			#stupid unpacking hack that surely has a more elegant solution somewhere
+			temp_list = list(reader)
+			for elm in temp_list[0]:
+				playlist_urls.append(elm)
 
-	return playlist_urls
+		return playlist_urls
+	except:
+		raise Exception

@@ -10,7 +10,7 @@ def startup():
 	sp = create_spotify_client()
 
 	#read the urls from the CSV
-	playlist_urls = read_playlist_urls()
+	playlist_urls = read_playlist_urls("playlist_urls")
 
 	#and fetch the respective names from Spotify
 	playlist_names = [fetch_playlist_name(sp,x) for x in playlist_urls]

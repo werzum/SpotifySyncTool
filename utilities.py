@@ -17,6 +17,7 @@ def check_valid_url(url):
 	return validators.url(url)
 
 def spotify_environment_variables_present():
+	
 	load_dotenv()
 	client_id = os.getenv("SPOTIPY_CLIENT_ID")
 	client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")

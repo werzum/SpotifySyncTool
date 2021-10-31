@@ -7,6 +7,10 @@ from playlist_management import *
 from utilities import *
 
 def startup():
+	"""
+	A method run at startup which reads URLs from the CSV to a list
+	and fetches their names via the spotify API
+	"""
 	sp = create_spotify_client()
 
 	#read the urls from the CSV
@@ -21,6 +25,7 @@ def startup():
 	return sp, playlist_urls, playlist_names, output
 
 def create_spotify_client():
+	"""Load the environment vars and authenticate spotipy with them"""
 	#load .env file
 	load_dotenv()
 	client_id = os.getenv("client_id")
@@ -31,12 +36,13 @@ def create_spotify_client():
 															   client_secret=client_secret))
 
 def create_window_elements(playlist_urls,playlist_names, output):
+	"""Define the contents of the window and return window, layout"""
+
 	# Define the window's contents
 	layout = [[sg.Frame(layout=[
 				[sg.Listbox(values=playlist_urls,size=(80,10),key="listbox_url")],
 				[sg.Listbox(values=playlist_names,size=(80,10),key="listbox_name")],
-#				[sg.Output(size=(80,5),key="listbox_output")],
-				[sg.Listbox(values=output,size=(80,5),key="listbox_output_1")]
+				[sg.Listbox(values=output,size=(80,5),key="listbox_output")]
 			],title="Playlists")],
 			[sg.Input(key="input",enable_events=True)],
 			[sg.Button("Add",bind_return_key=True),sg.Button("Remove"),sg.Button("Remove_All")],

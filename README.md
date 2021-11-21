@@ -11,8 +11,8 @@ By pressing the "sync" button, all songs of the entered playlists are downloaded
 
 1. `pip install` the dependencies
 2. Install `ffmpeg` and add it to your path as per this [tutorial](https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/).
-3. Create a .env and add `client_id=<your_spotify_client_id` and `client_secret=<your_spotify_client_secret> to it.
-4. Execute `main.exe`
+3. Create a .env and add `client_id=<your_spotify_client_id` and `client_secret=<your_spotify_client_secret> to it. The ID and secret are obtained by creating a Spotify Developer account and starting a sample app. Refer to the installation instruction from [spotipy here](https://github.com/plamere/spotipy) for a more exhaustive instruction.
+4. Execute `main.exe` or run `python3 main.py`
 
 ### From Source
 

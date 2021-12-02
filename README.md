@@ -7,11 +7,11 @@ By pressing the "sync" button, all songs of the entered playlists are downloaded
 
 ## Installation
 
-You will need Python, ffmpeg and a Spotify Developer account in order for this program to run.
+You will need Python, poetry, ffmpeg and a Spotify Developer account in order for this program to run.
 Complete the following steps:
 
 1. Download this repository as a zip, extract it and navigate to the extracted folder (or `git clone` it).
-2. Using the command line ([here is a guide to doing that](https://www.learnenough.com/command-line-tutorial#sec-running_a_terminal)),navigate to the extrated folder and run `pip install .` to install the required packages.
+2. Using the command line ([here is a guide to doing that](https://www.learnenough.com/command-line-tutorial#sec-running_a_terminal)),navigate to the extrated folder and run `pip install poetry` and `poetry install` to install the dependency manager poetry and then use it to actually install those dependencies.
 3. The SyncTool needs a media conversion program called `ffmpeg` in order to function. Install `ffmpeg` and add it to your path as per this [tutorial](https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/).
 4. Create a file called `.env` in the folder and enter the lines `client_id=<your_spotify_client_id` and `client_secret=<your_spotify_client_secret>` to it. The ID and secret are obtained by creating a Spotify Developer account and starting a sample app. Refer to the installation instruction from [spotipy here](https://github.com/plamere/spotipy) for a more exhaustive instruction.
 5. Execute `main.exe` or run `python3 main.py` to start the tool.

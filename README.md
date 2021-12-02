@@ -7,18 +7,14 @@ By pressing the "sync" button, all songs of the entered playlists are downloaded
 
 ## Installation
 
-### Binary (regular usage)
+You will need Python, ffmpeg and a Spotify Developer account in order for this program to run.
+Complete the following steps:
 
-1. `pip install` the dependencies
-2. Install `ffmpeg` and add it to your path as per this [tutorial](https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/).
-3. Create a .env and add `client_id=<your_spotify_client_id` and `client_secret=<your_spotify_client_secret> to it.
-4. Execute `main.exe`
-
-### From Source
-
-1. `pip install` the dependencies
-2. Create a .env and add `client_id=<your_spotify_client_id` and `client_secret=<your_spotify_client_secret> to it.
-3. Run the program with `python3 main.py`
+1. Download this repository as a zip, extract it and navigate to the extracted folder (or `git clone` it).
+2. Using the command line ([here is a guide to doing that](https://www.learnenough.com/command-line-tutorial#sec-running_a_terminal)),navigate to the extrated folder and run `pip install .` to install the required packages.
+3. The SyncTool needs a media conversion program called `ffmpeg` in order to function. Install `ffmpeg` and add it to your path as per this [tutorial](https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/).
+4. Create a file called `.env` in the folder and enter the lines `client_id=<your_spotify_client_id` and `client_secret=<your_spotify_client_secret>` to it. The ID and secret are obtained by creating a Spotify Developer account and starting a sample app. Refer to the installation instruction from [spotipy here](https://github.com/plamere/spotipy) for a more exhaustive instruction.
+5. Execute `main.exe` or run `python3 main.py` to start the tool.
 
 ## Usage
 

@@ -15,6 +15,10 @@ def sync(window, playlist_urls, playlist_names, output):
 	"""
 	Call the spotify_dl function for the playlist_urls and playlist_names,
 	passing the returned output to the listbox_output element
+
+	:param list playlist_urls,playlist_names: Lists containing strings of URLs and names
+	:param list output: A list where the text output of the console is written to
+
 	"""
 	for url,name in zip(playlist_urls,playlist_names):
 		cmd = ["spotify_dl","-l",url,"-o",name]
@@ -41,6 +45,9 @@ def fetch_playlist_name(sp, playlist_url):
 	"""
 	 Extracting the playlist id from the url with a regex removing the contained
 	"/" with this workaround - dont want to fiddle with the regex yet, and return its name
+
+	:param str playlist_url: List containing playlist
+	:return: A str with the name, or an Exception with the error
 	"""
 
 	#regex pattern that matches the last / of the spotify url

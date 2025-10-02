@@ -3,13 +3,17 @@ name = "spotifysynctool"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
+packages = [
+    { include = "spotifysynctool", from = "src" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-PySimpleGUI = "^4.55.1"
-dotenv = "^0.0.5"
+PySimpleGUI = ">=4.55.1,<6.0.0"
+python-dotenv = "^1.0.0"
 csv23 = "^0.3.2"
 spotipy = "^2.19.0"
+validators = "^0.20.0"
 
 [tool.poetry.dev-dependencies]
 
